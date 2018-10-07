@@ -1,0 +1,28 @@
+{
+  "name": "slotmachine",
+  "version": "0.1.0",
+  "main": "node-slotmachine.js",
+  "dependencies": {
+    "express": "^4.16.3",
+    "http": "^0.0.0",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jonipievilainen/node-slotmachine.git"
+  },
+  "keywords": [
+    "nodejs"
+  ],
+  "author": "jonipievilainen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jonipievilainen/node-slotmachine/issues"
+  },
+  "homepage": "https://github.com/jonipievilainen/node-slotmachine#readme",
+  "description": ""
+}
