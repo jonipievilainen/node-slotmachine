@@ -1,0 +1,253 @@
+<script src="js/jquery/dist/jquery.min.js"></script>
+<script src="js/jquery-slotmachine/dist/slotmachine.js"></script>
+<script src="js/jquery-slotmachine/dist/jquery.slotmachine.min.js"></script>
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+
+
+<div class="slotmachine-area">
+	<div class="statues">
+		Balance 10.20e
+	</div>
+	<div class="slots">
+		<div class="slot-area" id="slot1"></div>
+		<div class="slot-area" id="slot2"></div>
+		<div class="slot-area" id="slot3"></div>
+	</div>
+	<div class="buttons">
+		<div class="button-area">
+			<button class="lockBtn" id="lock-1">Lock</button>
+		</div>
+		<div class="button-area">
+			<button class="lockBtn" id="lock-2">Lock</button>
+		</div>
+		<div class="button-area">
+			<button class="lockBtn" id="lock-3">Lock</button>
+		</div>
+		<div class="button-area">
+			<button>Take money</button>
+		</div>
+		<div class="button-area">
+		</div>
+		<div class="button-area">
+			<button id="randomizeButton">ROLL</button>
+		</div>
+	</div>
+</div>
+
+<script>
+
+	var slots = {
+		0: {
+			percent: 50,
+			html: '<i class="fas fa-stop percent-50"></i>',
+			rate: 0
+		},
+		1: {
+			percent: 25,
+			html: '<i class="fas fa-chess-pawn percent-25"></i>',
+			rate: 1
+		},
+		2: {
+			percent: 13,
+			html: '<i class="fas fa-chess-rook percent-13"></i>',
+			rate: 1.5
+		},
+		3: {
+			percent: 6,
+			html: '<i class="fas fa-chess-knight percent-6"></i>',
+			rate: 2
+		},
+		4: {
+			percent: 3,
+			html: '<i class="fas fa-chess-bishop percent-3"></i>',
+			rate: 2.5
+		},
+		5: {
+			percent: 2,
+			html: '<i class="fas fa-chess-queen percent-2"></i>',
+			rate: 3
+		},
+		6: {
+			percent: 1,
+			html: '<i class="fas fa-chess-king percent-1"></i>',
+			rate: 10
+		}
+	};
+
+	$.fn.shuffle = function () {
+	    var j;
+	    for (var i = 0; i < this.length; i++) {
+	        j = Math.floor(Math.random() * this.length);
+	        $(this[i]).before($(this[j]));
+	    }
+	    return this;
+	};
+
+	var h = 0;
+	$.each( slots, function( index, slot ) {
+	  for(i=0; i<slot.percent; i++) {
+	  	$( "#slot1" ).append('<div class="slot" id="slot1-'+h+'" data-percent="'+slot.percent+'">'+slot.html+'<div>');
+	  	$( "#slot2" ).append('<div class="slot" id="slot2-'+h+'" data-percent="'+slot.percent+'">'+slot.html+'<div>');
+	  	$( "#slot3" ).append('<div class="slot" id="slot3-'+h+'" data-percent="'+slot.percent+'">'+slot.html+'<div>');
+	  	h++;
+	  }
+	});
+
+
+
+
+	const allEqual = arr => arr.every( v => v === arr[0] );
+	var currentSlots = [{lock: true}, {lock: true}, {lock: true}];
+
+	const btn = document.querySelector('#randomizeButton');
+	const results = {
+	  machine1: document.querySelector('#slot1'),
+	  machine2: document.querySelector('#slot2'),
+	  machine3: document.querySelector('#slot3')
+	};
+	const el1 = document.querySelector('#slot1');
+	const el2 = document.querySelector('#slot2');
+	const el3 = document.querySelector('#slot3');
+	const machine1 = new SlotMachine(el1, {
+		active: 0,
+		
+	});
+	const machine2 = new SlotMachine(el2, {
+		active: 0,
+		
+	});
+	const machine3 = new SlotMachine(el3, {
+		active: 0,
+		
+	});
+
+	function onComplete(active){
+		var elId = this.element.id;
+		var actId = this.active;
+		var data_percent = $('#'+elId+'-'+actId).attr('data-percent');
+
+		currentSlots.push({'lock': false, 'data': data_percent});
+
+		console.log(elId);
+		console.log(actId);
+		console.log(currentSlots);
+
+		if(currentSlots.length >= 3) {
+			if(allEqual([currentSlots[0].data, currentSlots[1].data, currentSlots[2].data])) {
+				console.log('winner!!');
+			} else {
+				console.log('no win');
+			}
+			currentSlots = [];
+		} 
+
+		//console.log(this.active);
+	}
+
+	btn.addEventListener('click', () => {
+	  
+	  //if(!currentSlots[0].lock)
+		  machine1.shuffle(1, onComplete);
+	 // if(!currentSlots[1].lock)
+		  setTimeout(() => machine2.shuffle(1, onComplete), 200);
+	  //if(!currentSlots[2].lock)
+		  setTimeout(() => machine3.shuffle(1, onComplete), 600);
+	});
+
+	/**
+	 * Lock slot
+	 */
+	$('.lockBtn').on('click', function() {
+		console.log(this.id);
+
+		if(this.id === "lock-1") {
+			currentSlots[0].lock = true;
+		}
+
+		if(this.id === "lock-2") {
+			currentSlots[1].lock = true;
+		}
+
+		if(this.id === "lock-3") {
+			currentSlots[2].lock = true;
+		}
+
+	});
+	
+</script>
+
+
+<style type="text/css">
+	body {
+		padding: 0;
+		margin: 0;
+	}
+	.slotmachine-area {
+		text-align: center;
+		height: 100%;
+	    background: antiquewhite;
+	}
+	.statues {
+		border: 1px solid;
+	}
+	.slotMachineContainer {
+		padding: 2em 0;
+	}
+	.slots {
+		border: 1px solid;
+		width: 80%;
+		margin: 10% auto 0 auto;
+		height: 300px;
+	}
+	.slot-area {
+		border: 1px solid;
+		width: 33%;
+		height: 100%;
+		float: left;
+	}
+	.buttons {
+		border: 1px solid;
+		width: 80%;
+		margin: auto;
+	}
+	.button-area {
+		border: 1px solid;
+		width: 33.13903%;
+		float: left;
+	}
+
+
+
+
+
+
+	i.fas {
+		font-size: 15em;
+		padding: 20px;
+		text-shadow: 2px -2px 13px #000;
+	}
+
+	.percent-50 {
+		color: #523b3b;
+	}
+	.percent-25 {
+		color: #393a3e;
+	}
+	.percent-13 {
+		color: #70ad6d;
+	}
+	.percent-6 {
+		color: #adac6d;
+	}
+	.percent-3 {
+		color: #CD7F32;
+	}
+	.percent-2 {
+		color: silver;
+	}
+	.percent-1 {
+		color: gold;
+	}
+	
+</style>
