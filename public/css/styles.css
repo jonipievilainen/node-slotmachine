@@ -1,0 +1,98 @@
+@font-face {
+    font-family:"RuneScape UF Regular";
+    src:url("/public/fonts/runescape_uf.eot?") format("eot"),
+        url("/public/fonts/runescape_uf.woff") format("woff"),
+        url("/public/fonts/runescape_uf.ttf") format("truetype"),
+        url("/public/fonts/runescape_uf.svg#RuneScape-UF") format("svg");
+        font-weight:normal;
+        font-style:normal;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    font-family: RuneScape UF Regular;
+    font-weight: bold;
+}
+.slotmachine-area {
+    text-align: center;
+    height: 100%;
+    background: url(/public/imgs/bg2.jpg) repeat-y center top;
+    background-color: #000;
+    padding: 0 12em;
+}
+.statues {
+    background: url(/public/imgs/logo.png) repeat-y;
+    height: 150px;
+    background-size: auto 100%;
+    background-position-x: 5em;
+}
+.statues h1 {
+    color: gold;
+    margin: 0;
+    font-size: 8em;
+    padding-top: 21px;
+}
+.slots {
+    border: 1px solid;
+    width: 91%;
+    margin: 2em 40px;
+    height: 668px;
+}
+.slot-area {
+    border: 1px solid;
+    width: 33%;
+    height: 100%;
+    float: left;
+}
+.buttons {
+    border: 1px solid;
+    width: 80%;
+    margin: auto;
+}
+.button-area {
+    border: 1px solid;
+    width: 33.13903%;
+    float: left;
+}
+i.fas {
+    font-size: 15em;
+    padding: 20px;
+    text-shadow: 2px -2px 13px #000;
+}
+.percent-50 {
+    color: #523b3b;
+}
+.percent-25 {
+    color: #393a3e;
+}
+.percent-13 {
+    color: #70ad6d;
+}
+.percent-6 {
+    color: #adac6d;
+}
+.percent-3 {
+    color: #CD7F32;
+}
+.percent-2 {
+    color: silver;
+}
+.percent-1 {
+    color: gold;
+}
+.slot img {
+    color: yellow;
+    height: 188px;
+    padding: 1em 0;
+}
+.win-line {
+    display: none;
+    position: absolute;
+    left: 15em;
+    top: 31.4em;
+    background: white;
+    height: 1em;
+    width: 49em;
+    background: greenyellow;
+}
