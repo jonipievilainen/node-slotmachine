@@ -4,8 +4,9 @@
 
 var $ = require("jquery");
 
-var http = require('http'),
-    fs = require('fs');
+// https://github.com/socketio/chat-example/blob/master/index.html
+const server = require('http').createServer();
+const io = require('socket.io')(server);
 
 const express = require('express');
 const app = express();
@@ -13,10 +14,50 @@ const port = 8000;
 
 const SerialPort = require('serialport');
 const Readline = require('@serialport/parser-readline');
-const sPort = new SerialPort('/dev/ttyACM0', { baudRate: 9600 });
+const sPort = new SerialPort('COM6', { baudRate: 9600 });
 const parser = sPort.pipe(new Readline({ delimiter: '\n' }));
 
 var path = require('path');
+
+var buttonStatus = false;
+sPort.on("open", () => {
+    // console.log('serial port open');
+});
+parser.on('data', data => {
+    // console.log('got word from arduino:', data);
+    if (data == 1) {
+        buttonStatus = true;
+    }
+
+    if (buttonStatus && (data == 0)) {
+        io.emit('chat message', 1);
+        buttonStatus = false;
+    }
+});
+
+io.on('connection', function (socket) {
+    socket.on('chat message', function (msg) {
+        io.emit('chat message', msg);
+
+        if (msg == 'win') {
+            sPort.write('1\n', (err) => {
+                if (err) {
+                    return console.log('Error on write: ', err.message);
+                }
+                console.log('message written');
+            });
+        } else {
+            sPort.write('2\n', (err) => {
+                if (err) {
+                    return console.log('Error on write: ', err.message);
+                }
+                console.log('message written');
+            });
+        }
+    });
+});
+
+server.listen(3000);
 
 
 var slots = {
@@ -108,11 +149,3 @@ function shuffle(array) {
 }
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
-
-
-sPort.on("open", () => {
-    console.log('serial port open');
-});
-parser.on('data', data => {
-    console.log('got word from arduino:', data);
-});
