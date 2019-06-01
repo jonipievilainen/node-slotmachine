@@ -11,6 +11,11 @@ const express = require('express');
 const app = express();
 const port = 8000;
 
+const SerialPort = require('serialport');
+const Readline = require('@serialport/parser-readline');
+const sPort = new SerialPort('/dev/ttyACM0', { baudRate: 9600 });
+const parser = sPort.pipe(new Readline({ delimiter: '\n' }));
+
 var path = require('path');
 
 
@@ -102,15 +107,12 @@ function shuffle(array) {
     return array;
 }
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
-// fs.readFile('./templates/index.html', function (err, html) {
-//     if (err) {
-//         throw err; 
-//     }       
-//     http.createServer(function(request, response) {  
-//         response.writeHeader(200, {"Content-Type": "text/html"});  
-//         response.write(html);  
-//         response.end();  
-//     }).listen(8000);
-// });
+
+sPort.on("open", () => {
+    console.log('serial port open');
+});
+parser.on('data', data => {
+    console.log('got word from arduino:', data);
+});
