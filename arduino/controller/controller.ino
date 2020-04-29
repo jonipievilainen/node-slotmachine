@@ -1,34 +1,76 @@
+int winLed = 3;
+int winButton = 4;
+
+int slot1Led = 5;
+int slot1Button = 6;
+
+int slot2Led = 7;
+int slot2Button = 8;
+
+int slot3Led = 9;
+int slot3Button = 10;
+
+int playLed = 11;
+int playButton = 12;
+
+
 int pushButton = 3;
 
 void setup() {
-  pinMode(5, OUTPUT);
-  pinMode(7, OUTPUT);
   Serial.begin(9600);
-  pinMode(pushButton, INPUT);
+  
+  pinMode(winButton, OUTPUT);
+  pinMode(slot1Button, OUTPUT);
+  pinMode(slot2Button, OUTPUT);
+  pinMode(slot3Button, OUTPUT);
+  pinMode(playButton, OUTPUT);
+
+  pinMode(winLed, INPUT);
+  pinMode(slot1Led, INPUT);
+  pinMode(slot2Led, INPUT);
+  pinMode(slot3Led, INPUT);
+  pinMode(playLed, INPUT);
 }
 
 void loop() {
-  int buttonState = digitalRead(pushButton);
+
+  int winButtonState = digitalRead(winButton);
+  int slot1ButtonState = digitalRead(slot1Button);
+  int slot2ButtonState = digitalRead(slot2Button);
+  int slot3ButtonState = digitalRead(slot3Button);
+  int playButtonState = digitalRead(playButton);
+
   
-  Serial.println(buttonState);
-
-  if (Serial.available()) {
-    int state = Serial.parseInt();
-
-    // Serial.println(state);
-
-    if (state == 1) {
-      digitalWrite(5, HIGH);
-      delay(500);
-      digitalWrite(5, LOW);
-    }
-
-    if (state == 2) {
-      digitalWrite(7, HIGH);
-      delay(500);
-      digitalWrite(7, LOW);
-    }
+  if (winButtonState == HIGH) {
+    digitalWrite(winLed, HIGH);
+    delay(500);
   }
+
+  if (slot1ButtonState == HIGH) {
+    digitalWrite(slot1Led, HIGH);
+    delay(500);
+  }
+
+  if (slot2ButtonState == HIGH) {
+    digitalWrite(slot2Led, HIGH);
+    delay(500);
+  }
+
+  if (slot3ButtonState == HIGH) {
+    digitalWrite(slot3Led, HIGH);
+    delay(500);
+  }
+
+  if (playButtonState == HIGH) {
+    digitalWrite(playLed, HIGH);
+    delay(500);
+  }
+
+  digitalWrite(winLed, LOW);
+  digitalWrite(slot1Led, LOW);
+  digitalWrite(slot2Led, LOW);
+  digitalWrite(slot3Led, LOW);
+  digitalWrite(playLed, LOW);
   
   delay(100);        // delay in between reads for stability
 }
