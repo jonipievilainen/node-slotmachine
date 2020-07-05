@@ -1,66 +1,76 @@
-int playLed     = 11;
-int playButton  = 12;
+int winLed = 3;
+int winButton = 4;
 
-int col1Led     = 9;
-int col1Button  = 10;
+int slot1Led = 5;
+int slot1Button = 6;
 
-int col2Led     = 7;
-int col2Button  = 8;
+int slot2Led = 7;
+int slot2Button = 8;
 
-int col3Led     = 5;
-int col3Button  = 6;
+int slot3Led = 9;
+int slot3Button = 10;
 
-int winLed      = 3;
-int winButton   = 4;
+int playLed = 11;
+int playButton = 12;
 
 
+int pushButton = 3;
 
 void setup() {
-
   Serial.begin(9600);
+  
+  pinMode(winButton, OUTPUT);
+  pinMode(slot1Button, OUTPUT);
+  pinMode(slot2Button, OUTPUT);
+  pinMode(slot3Button, OUTPUT);
+  pinMode(playButton, OUTPUT);
 
-  pinMode(playLed,    OUTPUT);
-  pinMode(playButton, INPUT);
-  pinMode(col1Led,    OUTPUT);
-  pinMode(col1Button, INPUT);
-  pinMode(col2Led,    OUTPUT);
-  pinMode(col2Button, INPUT);
-  pinMode(col3Led,    OUTPUT);
-  pinMode(col3Button, INPUT);
-  pinMode(winLed,     OUTPUT);
-  pinMode(winButton,  INPUT);
+  pinMode(winLed, INPUT);
+  pinMode(slot1Led, INPUT);
+  pinMode(slot2Led, INPUT);
+  pinMode(slot3Led, INPUT);
+  pinMode(playLed, INPUT);
 }
 
 void loop() {
 
-
+  int winButtonState = digitalRead(winButton);
+  int slot1ButtonState = digitalRead(slot1Button);
+  int slot2ButtonState = digitalRead(slot2Button);
+  int slot3ButtonState = digitalRead(slot3Button);
   int playButtonState = digitalRead(playButton);
-  int col1ButtonState = digitalRead(col1Button);
-  int col2ButtonState = digitalRead(col2Button);
-  int col3ButtonState = digitalRead(col3Button);
-  int winButtonState  = digitalRead(winButton);
+
   
-  Serial.println(playButtonState);
-
-  if (Serial.available()) {
-    int state = Serial.parseInt();
-
-    Serial.println(state);
-
-    /*
-    if (state == 1) {
-      digitalWrite(playLed, HIGH);
-      delay(500);
-      digitalWrite(playLed, LOW);
-    }
-
-    if (state == 2) {
-      digitalWrite(col1Led, HIGH);
-      delay(500);
-      digitalWrite(col1Led, LOW);
-    }
-    */
+  if (winButtonState == HIGH) {
+    digitalWrite(winLed, HIGH);
+    delay(500);
   }
+
+  if (slot1ButtonState == HIGH) {
+    digitalWrite(slot1Led, HIGH);
+    delay(500);
+  }
+
+  if (slot2ButtonState == HIGH) {
+    digitalWrite(slot2Led, HIGH);
+    delay(500);
+  }
+
+  if (slot3ButtonState == HIGH) {
+    digitalWrite(slot3Led, HIGH);
+    delay(500);
+  }
+
+  if (playButtonState == HIGH) {
+    digitalWrite(playLed, HIGH);
+    delay(500);
+  }
+
+  digitalWrite(winLed, LOW);
+  digitalWrite(slot1Led, LOW);
+  digitalWrite(slot2Led, LOW);
+  digitalWrite(slot3Led, LOW);
+  digitalWrite(playLed, LOW);
   
   delay(100);        // delay in between reads for stability
 }
